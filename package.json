@@ -3,7 +3,7 @@
   "displayName": "Variable Formatter",
   "description": "Format variable names according to different naming conventions (camelCase, PascalCase, snake_case, kebab-case)",
   "version": "0.1.0",
-  "icon": "icon.svg",
+  "icon": "icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/zeawhy/vscode-variable-formatter.git"
