@@ -18,6 +18,9 @@
       <text x="0" y="36" font-family="'Courier New', monospace" font-size="10" fill="#E8F4FD">kebab-case</text>
     </g>
     
+    <!-- Author name -->
+    <text x="0" y="35" font-family="'Arial', sans-serif" font-size="8" font-weight="bold" fill="#B3D9FF" text-anchor="middle">YorkZhang</text>
+    
     <!-- Decorative code brackets -->
     <text x="-45" y="25" font-family="'Courier New', monospace" font-size="20" font-weight="bold" fill="#B3D9FF">{</text>
     <text x="35" y="25" font-family="'Courier New', monospace" font-size="20" font-weight="bold" fill="#B3D9FF">}</text>
