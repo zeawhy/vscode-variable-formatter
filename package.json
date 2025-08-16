@@ -6,6 +6,10 @@
   "sponsor": {
     "url": "https://github.com/sponsors/zeawhy"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zeawhy/vscode-variable-formatter.git"
+  },
   "engines": {
     "vscode": "^1.74.0"
   },
