@@ -153,14 +153,6 @@ npm run watch
 
 ![微信收款码](./assets/WechatIMG253.jpg)
 
-**GitHub Sponsors**
-
-[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa?style=for-the-badge&logo=github)](https://github.com/sponsors/zeawhy)
-
-**Buy Me a Coffee**
-
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/zeawhy)
-
 您的支持是我持续改进这个项目的动力！🙏
 
 ## 贡献
