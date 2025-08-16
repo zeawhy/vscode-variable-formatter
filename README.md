@@ -139,6 +139,30 @@ npm run watch
 1. 按 `F5` 启动扩展开发主机
 2. 在新窗口中测试插件功能
 
+## 支持作者
+
+如果这个插件对您有帮助，欢迎支持作者继续开发和维护！
+
+### 捐赠方式
+
+**支付宝**
+
+![支付宝收款码](./assets/WechatIMG254.jpg)
+
+**微信支付**
+
+![微信收款码](./assets/WechatIMG253.jpg)
+
+**GitHub Sponsors**
+
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa?style=for-the-badge&logo=github)](https://github.com/sponsors/zeawhy)
+
+**Buy Me a Coffee**
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/zeawhy)
+
+您的支持是我持续改进这个项目的动力！🙏
+
 ## 贡献
 
 欢迎提交Issue和Pull Request！
