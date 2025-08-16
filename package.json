@@ -1,0 +1,85 @@
+{
+  "name": "variable-formatter",
+  "displayName": "Variable Formatter",
+  "description": "Format variable names according to different naming conventions (camelCase, PascalCase, snake_case, kebab-case)",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Formatters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:variable-formatter.formatToCamelCase",
+    "onCommand:variable-formatter.formatToPascalCase",
+    "onCommand:variable-formatter.formatToSnakeCase",
+    "onCommand:variable-formatter.formatToKebabCase",
+    "onCommand:variable-formatter.formatVariable"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "variable-formatter.formatToCamelCase",
+        "title": "Format to camelCase"
+      },
+      {
+        "command": "variable-formatter.formatToPascalCase",
+        "title": "Format to PascalCase"
+      },
+      {
+        "command": "variable-formatter.formatToSnakeCase",
+        "title": "Format to snake_case"
+      },
+      {
+        "command": "variable-formatter.formatToKebabCase",
+        "title": "Format to kebab-case"
+      },
+      {
+        "command": "variable-formatter.formatVariable",
+        "title": "Format Variable (Choose Convention)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "variable-formatter.formatVariable",
+        "key": "ctrl+shift+f",
+        "mac": "cmd+shift+f",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "Variable Formatter",
+      "properties": {
+        "variableFormatter.defaultConvention": {
+          "type": "string",
+          "default": "camelCase",
+          "enum": [
+            "camelCase",
+            "PascalCase",
+            "snake_case",
+            "kebab-case"
+          ],
+          "description": "Default naming convention to use when formatting variables"
+        },
+        "variableFormatter.autoDetectLanguage": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically detect the appropriate naming convention based on the file language"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {}
+}
