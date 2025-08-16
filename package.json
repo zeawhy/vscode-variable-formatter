@@ -1,6 +1,6 @@
 {
   "name": "variable-formatter",
-  "displayName": "Variable Formatter",
+  "displayName": "Variable Formatter by YorkZhang",
   "description": "Format variable names according to different naming conventions (camelCase, PascalCase, snake_case, kebab-case)",
   "version": "0.1.0",
   "publisher": "YorkZhang",
