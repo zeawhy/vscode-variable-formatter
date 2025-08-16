@@ -49,6 +49,35 @@
         "when": "editorTextFocus"
       }
     ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "variable-formatter.formatVariable",
+          "when": "editorHasSelection",
+          "group": "1_modification@1"
+        },
+        {
+          "command": "variable-formatter.formatToCamelCase",
+          "when": "editorHasSelection",
+          "group": "1_modification@2"
+        },
+        {
+          "command": "variable-formatter.formatToPascalCase",
+          "when": "editorHasSelection",
+          "group": "1_modification@3"
+        },
+        {
+          "command": "variable-formatter.formatToSnakeCase",
+          "when": "editorHasSelection",
+          "group": "1_modification@4"
+        },
+        {
+          "command": "variable-formatter.formatToKebabCase",
+          "when": "editorHasSelection",
+          "group": "1_modification@5"
+        }
+      ]
+    },
     "configuration": {
       "title": "Variable Formatter",
       "properties": {
