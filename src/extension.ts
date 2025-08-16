@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { VariableFormatter } from './variableFormatter';
+import { VariableFormatter } from './variableFormatter.js';
 
 export function activate(context: vscode.ExtensionContext) {
     const formatter = new VariableFormatter();
