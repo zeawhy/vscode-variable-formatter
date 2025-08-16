@@ -1,0 +1,34 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="#007ACC" stroke="#005A9E" stroke-width="2"/>
+  
+  <!-- Variable symbol container -->
+  <g transform="translate(64, 64)">
+    <!-- Variable 'x' symbol -->
+    <text x="-35" y="-15" font-family="'Courier New', monospace" font-size="24" font-weight="bold" fill="white">x</text>
+    
+    <!-- Arrow pointing right -->
+    <path d="M -10 -15 L 10 -15 L 5 -20 M 10 -15 L 5 -10" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Formatted variable examples -->
+    <g transform="translate(15, -25)">
+      <text x="0" y="0" font-family="'Courier New', monospace" font-size="10" fill="#E8F4FD">camelCase</text>
+      <text x="0" y="12" font-family="'Courier New', monospace" font-size="10" fill="#E8F4FD">PascalCase</text>
+      <text x="0" y="24" font-family="'Courier New', monospace" font-size="10" fill="#E8F4FD">snake_case</text>
+      <text x="0" y="36" font-family="'Courier New', monospace" font-size="10" fill="#E8F4FD">kebab-case</text>
+    </g>
+    
+    <!-- Decorative code brackets -->
+    <text x="-45" y="25" font-family="'Courier New', monospace" font-size="20" font-weight="bold" fill="#B3D9FF">{</text>
+    <text x="35" y="25" font-family="'Courier New', monospace" font-size="20" font-weight="bold" fill="#B3D9FF">}</text>
+  </g>
+  
+  <!-- Subtle gradient overlay -->
+  <defs>
+    <radialGradient id="shine" cx="0.3" cy="0.3" r="0.7">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.2)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+  </defs>
+  <circle cx="64" cy="64" r="60" fill="url(#shine)"/>
+</svg>
