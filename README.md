@@ -9,11 +9,14 @@
   - **PascalCase** (帕斯卡命名): `MyVariable`
   - **snake_case** (下划线命名): `my_variable`
   - **kebab-case** (短横线命名): `my-variable`
+  - **SCREAMING_SNAKE_CASE** (大写下划线命名): `MY_VARIABLE`
 
 - 🎯 智能变量名识别和解析
 - ⚡ 快捷键支持
 - 🔧 可配置的默认命名规范
 - 🌐 根据编程语言自动推荐命名规范
+- 📦 批量转换整个文件中的所有变量
+- 👀 预览功能：转换前查看所有可能的格式化结果
 
 ## 安装
 
@@ -39,6 +42,9 @@
 - `Format to PascalCase` - 直接转换为帕斯卡命名
 - `Format to snake_case` - 直接转换为下划线命名
 - `Format to kebab-case` - 直接转换为短横线命名
+- `Format to SCREAMING_SNAKE_CASE` - 直接转换为大写下划线命名
+- `Format All Variables in File` - 批量转换文件中的所有变量
+- `Preview Variable Formatting` - 预览所有格式化选项
 
 ### 示例
 
@@ -48,6 +54,18 @@ my_variable_name    → myVariableName (camelCase)
 MyVariableName      → my_variable_name (snake_case)
 my-variable-name    → MyVariableName (PascalCase)
 camelCaseVar        → camel-case-var (kebab-case)
+api_key             → API_KEY (SCREAMING_SNAKE_CASE)
+
+// 批量转换示例
+// 转换前:
+const user_name = 'john';
+const user_email = 'john@example.com';
+const api_key = 'secret';
+
+// 转换后 (camelCase):
+const userName = 'john';
+const userEmail = 'john@example.com';
+const apiKey = 'secret';
 ```
 
 ## 配置选项

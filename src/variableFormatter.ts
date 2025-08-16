@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-export type NamingConvention = 'camelCase' | 'PascalCase' | 'snake_case' | 'kebab-case';
+export type NamingConvention = 'camelCase' | 'PascalCase' | 'snake_case' | 'kebab-case' | 'SCREAMING_SNAKE_CASE';
 
 export class VariableFormatter {
     private readonly variableRegex = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
@@ -46,10 +46,220 @@ export class VariableFormatter {
     }
 
     /**
+     * Preview variable formatting with before/after comparison
+     */
+    public async previewVariableFormatting(): Promise<void> {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active editor found');
+            return;
+        }
+
+        const selection = editor.selection;
+        const selectedText = editor.document.getText(selection);
+
+        if (!selectedText) {
+            vscode.window.showErrorMessage('Please select a variable name to preview formatting');
+            return;
+        }
+
+        // Validate if the selected text is a valid variable name
+        if (!this.isValidVariableName(selectedText)) {
+            vscode.window.showErrorMessage('Selected text is not a valid variable name');
+            return;
+        }
+
+        // Generate all possible conversions
+        const conversions = {
+            'camelCase': this.convertToConvention(selectedText, 'camelCase'),
+            'PascalCase': this.convertToConvention(selectedText, 'PascalCase'),
+            'snake_case': this.convertToConvention(selectedText, 'snake_case'),
+            'kebab-case': this.convertToConvention(selectedText, 'kebab-case'),
+            'SCREAMING_SNAKE_CASE': this.convertToConvention(selectedText, 'SCREAMING_SNAKE_CASE')
+        };
+
+        // Create preview options
+        const previewOptions = Object.entries(conversions).map(([convention, converted]) => ({
+            label: `${convention}: ${converted}`,
+            description: converted === selectedText ? '(no change)' : `${selectedText} → ${converted}`,
+            convention: convention as NamingConvention,
+            converted: converted
+        }));
+
+        const selectedOption = await vscode.window.showQuickPick(previewOptions, {
+            placeHolder: `Preview formatting for "${selectedText}" - Select to apply`,
+            matchOnDescription: true
+        });
+
+        if (selectedOption && selectedOption.converted !== selectedText) {
+            // Apply the selected conversion
+            await editor.edit(editBuilder => {
+                editBuilder.replace(selection, selectedOption.converted);
+            });
+            
+            vscode.window.showInformationMessage(
+                `Applied ${selectedOption.convention}: ${selectedText} → ${selectedOption.converted}`
+            );
+        }
+    }
+
+    /**
+     * Format all variables in the current file
+     */
+    public async formatAllVariablesInFile(convention: NamingConvention): Promise<void> {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active editor found');
+            return;
+        }
+
+        const document = editor.document;
+        const text = document.getText();
+        const variableMatches = this.findAllVariables(text);
+
+        if (variableMatches.length === 0) {
+            vscode.window.showInformationMessage('No variables found in the current file');
+            return;
+        }
+
+        const result = await vscode.window.showWarningMessage(
+            `Found ${variableMatches.length} variables. Convert all to ${convention}?`,
+            'Yes', 'No'
+        );
+
+        if (result !== 'Yes') {
+            return;
+        }
+
+        let changedCount = 0;
+        await editor.edit(editBuilder => {
+            // Process matches in reverse order to maintain correct positions
+            variableMatches.reverse().forEach(match => {
+                const originalVariable = match.text;
+                const formattedVariable = this.convertToConvention(originalVariable, convention);
+                
+                if (formattedVariable !== originalVariable) {
+                    const startPos = document.positionAt(match.start);
+                    const endPos = document.positionAt(match.end);
+                    const range = new vscode.Range(startPos, endPos);
+                    editBuilder.replace(range, formattedVariable);
+                    changedCount++;
+                }
+            });
+        });
+
+        vscode.window.showInformationMessage(`Converted ${changedCount} variables to ${convention}`);
+    }
+
+    /**
+     * Format multiple selected variables
+     */
+    public async formatMultipleSelections(convention: NamingConvention): Promise<void> {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active editor found');
+            return;
+        }
+
+        const selections = editor.selections;
+        if (selections.length <= 1) {
+            // Fall back to single selection formatting
+            return this.formatSelectedVariable(convention);
+        }
+
+        let changedCount = 0;
+        const invalidSelections: string[] = [];
+
+        await editor.edit(editBuilder => {
+            // Process selections in reverse order to maintain correct positions
+            selections.slice().reverse().forEach((selection, index) => {
+                const selectedText = editor.document.getText(selection);
+                
+                if (!selectedText || !this.isValidVariableName(selectedText)) {
+                    invalidSelections.push(`Selection ${selections.length - index}`);
+                    return;
+                }
+
+                const formattedVariable = this.convertToConvention(selectedText, convention);
+                
+                if (formattedVariable !== selectedText) {
+                    editBuilder.replace(selection, formattedVariable);
+                    changedCount++;
+                }
+            });
+        });
+
+        if (invalidSelections.length > 0) {
+            vscode.window.showWarningMessage(
+                `Invalid variable names in: ${invalidSelections.join(', ')}`
+            );
+        }
+
+        if (changedCount > 0) {
+            vscode.window.showInformationMessage(
+                `Converted ${changedCount} variables to ${convention}`
+            );
+        } else {
+            vscode.window.showInformationMessage(
+                `All selected variables are already in ${convention} format`
+            );
+        }
+    }
+
+    /**
      * Check if a string is a valid variable name
      */
     private isValidVariableName(text: string): boolean {
         return this.variableRegex.test(text.trim());
+    }
+
+    /**
+     * Find all variables in the given text
+     */
+    private findAllVariables(text: string): Array<{text: string, start: number, end: number}> {
+        const matches: Array<{text: string, start: number, end: number}> = [];
+        const variablePattern = /\b[a-zA-Z_$][a-zA-Z0-9_$]*\b/g;
+        
+        let match;
+        while ((match = variablePattern.exec(text)) !== null) {
+            const variableName = match[0];
+            
+            // Skip JavaScript/TypeScript keywords and common reserved words
+            if (!this.isReservedWord(variableName) && this.isValidVariableName(variableName)) {
+                matches.push({
+                    text: variableName,
+                    start: match.index,
+                    end: match.index + variableName.length
+                });
+            }
+        }
+        
+        return matches;
+    }
+
+    /**
+     * Check if a word is a reserved keyword
+     */
+    private isReservedWord(word: string): boolean {
+        const reservedWords = new Set([
+            // JavaScript/TypeScript keywords
+            'abstract', 'arguments', 'await', 'boolean', 'break', 'byte', 'case', 'catch',
+            'char', 'class', 'const', 'continue', 'debugger', 'default', 'delete', 'do',
+            'double', 'else', 'enum', 'eval', 'export', 'extends', 'false', 'final',
+            'finally', 'float', 'for', 'function', 'goto', 'if', 'implements', 'import',
+            'in', 'instanceof', 'int', 'interface', 'let', 'long', 'native', 'new',
+            'null', 'package', 'private', 'protected', 'public', 'return', 'short',
+            'static', 'super', 'switch', 'synchronized', 'this', 'throw', 'throws',
+            'transient', 'true', 'try', 'typeof', 'var', 'void', 'volatile', 'while',
+            'with', 'yield', 'async', 'of', 'from', 'as', 'any', 'unknown', 'never',
+            'object', 'string', 'number', 'bigint', 'symbol', 'undefined',
+            // Common built-in objects and functions
+            'console', 'window', 'document', 'Array', 'Object', 'String', 'Number',
+            'Boolean', 'Date', 'RegExp', 'Error', 'JSON', 'Math', 'parseInt', 'parseFloat',
+            'isNaN', 'isFinite', 'encodeURI', 'decodeURI', 'setTimeout', 'setInterval'
+        ]);
+        
+        return reservedWords.has(word.toLowerCase());
     }
 
     /**
@@ -67,6 +277,8 @@ export class VariableFormatter {
                 return this.toSnakeCase(words);
             case 'kebab-case':
                 return this.toKebabCase(words);
+            case 'SCREAMING_SNAKE_CASE':
+                return this.toScreamingSnakeCase(words);
             default:
                 return variableName;
         }
@@ -129,6 +341,13 @@ export class VariableFormatter {
      */
     private toKebabCase(words: string[]): string {
         return words.map(word => word.toLowerCase()).join('-');
+    }
+
+    /**
+     * Convert words to SCREAMING_SNAKE_CASE
+     */
+    private toScreamingSnakeCase(words: string[]): string {
+        return words.map(word => word.toUpperCase()).join('_');
     }
 
     /**

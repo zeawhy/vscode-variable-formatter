@@ -2,7 +2,7 @@
   "name": "variable-formatter",
   "displayName": "Variable Formatter",
   "description": "Format variable names according to different naming conventions (camelCase, PascalCase, snake_case, kebab-case)",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -37,8 +37,20 @@
         "title": "Format to kebab-case"
       },
       {
+        "command": "variable-formatter.formatToScreamingSnakeCase",
+        "title": "Format to SCREAMING_SNAKE_CASE"
+      },
+      {
         "command": "variable-formatter.formatVariable",
         "title": "Format Variable (Choose Convention)"
+      },
+      {
+        "command": "variable-formatter.formatAllVariables",
+        "title": "Format All Variables in File"
+      },
+      {
+        "command": "variable-formatter.previewFormatting",
+        "title": "Preview Variable Formatting"
       }
     ],
     "keybindings": [
@@ -75,6 +87,21 @@
           "command": "variable-formatter.formatToKebabCase",
           "when": "editorHasSelection",
           "group": "1_modification@5"
+        },
+        {
+          "command": "variable-formatter.formatToScreamingSnakeCase",
+          "when": "editorHasSelection",
+          "group": "1_modification@6"
+        },
+        {
+          "command": "variable-formatter.formatAllVariables",
+          "when": "editorTextFocus",
+          "group": "1_modification@7"
+        },
+        {
+          "command": "variable-formatter.previewFormatting",
+          "when": "editorHasSelection",
+          "group": "1_modification@8"
         }
       ]
     },
